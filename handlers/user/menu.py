@@ -1,7 +1,8 @@
-from aiogram import types
-from loader import dp, bot
-from utils.db.manager_database import Peers, User, db
 from configparser import ConfigParser
+
+from aiogram import types
+from loader import bot, dp
+from utils.db.manager_database import Peers, User, db
 
 
 async def get_config(count, user_id):
@@ -46,13 +47,12 @@ async def start(message: types.Message):
     if data is None:
         count = await db.func.count(Peers.publickey).gino.scalar()
         data = await get_config(count, message.from_user.id)
-    await bot.send_document(
-            document=types.InputFile(
-                    path_or_bytesio=data,
-                    filename=f'VPN for {message.from_user.username}'
-                ),
-            chat_id=message.chat.id
-        )
+
+    with open(data, 'rb') as file:
+        await bot.send_document(
+                document=file,
+                chat_id=message.chat.id
+            )
 
 	
 
