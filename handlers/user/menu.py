@@ -43,7 +43,7 @@ async def start(message: types.Message):
 
 @dp.message_handler(commands='add')
 async def start(message: types.Message):
-    data = await Peers.select('path').where(User.id == message.from_user.id).gino.scalar()
+    data = await Peers.select('path').where(Peers.user_id == message.from_user.id).gino.scalar()
     if data is None:
         count = await db.func.count(Peers.publickey).gino.scalar()
         data = await get_config(count, message.from_user.id)
@@ -53,8 +53,3 @@ async def start(message: types.Message):
                 document=file,
                 chat_id=message.chat.id
             )
-
-	
-
-    
-      
