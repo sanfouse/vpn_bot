@@ -19,7 +19,6 @@ async def get_config(count, user_id):
     
 async def check_start(user_id, username):
 	data = await User.query.where(User.id==user_id).gino.scalar()
-
 	nickname = 'noname'
 
 	if username is not None:
