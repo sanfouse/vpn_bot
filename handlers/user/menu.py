@@ -8,18 +8,20 @@ import os
 
 
 async def get_config(count, user_id):
+    file_path = f'/files/{user_id}.conf'
+    url = f"http://194.87.219.96:8080/peer{count + 1}/peer{count + 1}.conf"
+    responce = requests.get(url)
+    with open(file_path, 'wb') as file:
+        file.write(responce.content)
     config = ConfigParser()
-    path = f"http://194.87.219.96:8080/peer{count + 1}/peer{count + 1}.conf"
-    responce = requests.get(path)
-    open(f'/home/vpn_bot/handlers/user/files/{user_id}.conf', 'wb').write(responce.content)
-    config.read(f'/home/vpn_bot/handlers/user/files/{user_id}.conf')
-    data_1 = dict(config.items('Interface'))
-    data_2 = dict(config.items('Peer'))
-    ip = data_1['address']
-    publickey = data_2['publickey']
-    await Peers.create(ip=ip, publickey=publickey, user_id=user_id, path=path)
-    os.remove(f'/home/vpn_bot/handlers/user/files/{user_id}.conf')
-    return path
+    config.read(file_path)
+    interface = dict(config.items('Interface'))
+    peer = dict(config.items('Peer'))
+    ip = interface['address']
+    publickey = peer['publickey']
+    await Peers.create(ip=ip, publickey=publickey, user_id=user_id, path=url)
+    os.remove(file_path)
+    return url
 
     
 async def check_start(user_id, username):
