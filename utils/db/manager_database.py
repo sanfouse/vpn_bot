@@ -5,7 +5,6 @@ from utils.config import DATABASE_URL
 
 db = Gino()
 
-print(DATABASE_URL)
 class User(db.Model):
 
   __tablename__ = 'users'
