@@ -10,7 +10,7 @@ async def get_config(count, user_id):
     responce = requests.get(url)
     result = responce.json()[f'peer{count + 1}']
     await Peers.create(ip=result['ip'], publickey=result['publickey'], user_id=user_id, path=result['address'])
-    return 'http://194.87.219.96:8080/data.json'
+    return result['address']
 
     
 async def check_start(user_id, username):
