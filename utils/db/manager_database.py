@@ -27,7 +27,7 @@ class Peers(db.Model):
 
   url = db.Column(db.Unicode())
   is_free = db.Column(db.Boolean, default=True)
-  user = db.Column(db.ForeignKey('users.user_id'), default=None, nullable=True, primary_key=True)
+  user = db.Column(db.ForeignKey('users.user_id'), default=None)
   server = db.Column(db.ForeignKey('servers.ip_server'))
 
 
