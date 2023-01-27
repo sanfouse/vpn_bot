@@ -9,18 +9,27 @@ class User(db.Model):
 
   __tablename__ = 'users'
 
-  id = db.Column(db.BigInteger(), primary_key=True)
+  user_id = db.Column(db.BigInteger(), primary_key=True)
   nickname = db.Column(db.Unicode(), default='noname')
+
+
+class Servers(db.Model):
+
+  __tablename__ = 'servers'
+
+  ip_server = db.Column(db.Unicode(), primary_key=True)
+  is_parse = db.Column(db.Boolean, unique=False, default=False)
 
 
 class Peers(db.Model):
 
   __tablename__ = 'peers'
 
-  ip = db.Column(db.Unicode(), default='0.0.0.0')
-  user_id = db.Column(db.BigInteger(), primary_key=True, nullable=True, default=None)
-  publickey = db.Column(db.Unicode())
-  path = db.Column(db.Unicode())
+  url = db.Column(db.Unicode())
+  is_free = db.Column(db.Boolean, default=True)
+  user = db.Column(db.ForeignKey('users.user_id'), default=None, nullable=True, primary_key=True)
+  server = db.Column(db.ForeignKey('servers.ip_server'))
+
 
 async def main():
   await db.set_bind(
