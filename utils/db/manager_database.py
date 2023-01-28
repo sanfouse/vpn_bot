@@ -25,6 +25,7 @@ class Peers(db.Model):
 
   __tablename__ = 'peers'
 
+  peer_id = db.Column(db.BigInteger(), primary_key=True, autoincrement=True)
   url = db.Column(db.Unicode())
   is_free = db.Column(db.Boolean, default=True)
   user = db.Column(db.ForeignKey('users.user_id'), default=None)
